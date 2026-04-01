@@ -19,7 +19,7 @@ import {
     HeadObjectCommand,
 } from "@aws-sdk/client-s3";
 import { readFileSync, writeFileSync, existsSync, createWriteStream } from "fs";
-import { basename } from "path";
+import { basename, extname } from "path";
 import { pipeline } from "stream/promises";
 import dotenv from "dotenv";
 
@@ -154,10 +154,13 @@ async function cmdUpload(args) {
 
     console.error(`Uploading: ${filePath} → s3://${bucket}/${key}`);
 
+    const contentType = getMimeType(filePath);
+
     await client.send(new PutObjectCommand({
         Bucket: bucket,
         Key: key,
         Body: body,
+        ContentType: contentType,
     }));
 
     console.log(`Uploaded: s3://${bucket}/${key} (${formatBytes(body.length)})`);
@@ -227,6 +230,34 @@ async function cmdInfo(args) {
         etag: response.ETag,
         metadata: response.Metadata,
     }, null, 2));
+}
+
+const MIME_TYPES = {
+    ".txt":  "text/plain",
+    ".html": "text/html",
+    ".htm":  "text/html",
+    ".css":  "text/css",
+    ".js":   "application/javascript",
+    ".json": "application/json",
+    ".xml":  "application/xml",
+    ".csv":  "text/csv",
+    ".md":   "text/markdown",
+    ".png":  "image/png",
+    ".jpg":  "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif":  "image/gif",
+    ".svg":  "image/svg+xml",
+    ".webp": "image/webp",
+    ".ico":  "image/x-icon",
+    ".pdf":  "application/pdf",
+    ".zip":  "application/zip",
+    ".mp3":  "audio/mpeg",
+    ".mp4":  "video/mp4",
+    ".webm": "video/webm",
+};
+
+function getMimeType(filePath) {
+    return MIME_TYPES[extname(filePath).toLowerCase()] || "application/octet-stream";
 }
 
 function formatBytes(bytes) {
