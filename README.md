@@ -89,6 +89,24 @@ r2bucket delete uploads/photo.jpg
 r2bucket info uploads/photo.jpg
 ```
 
+## MIME Types
+
+`Content-Type` is automatically detected from the file extension on upload:
+
+| Extension | Content-Type |
+|---|---|
+| `.txt` | `text/plain` |
+| `.html` / `.htm` | `text/html` |
+| `.css` | `text/css` |
+| `.js` | `application/javascript` |
+| `.json` | `application/json` |
+| `.md` | `text/markdown` |
+| `.png` / `.jpg` / `.gif` / `.svg` / `.webp` | `image/*` |
+| `.pdf` | `application/pdf` |
+| `.mp3` | `audio/mpeg` |
+| `.mp4` / `.webm` | `video/*` |
+| other | `application/octet-stream` |
+
 ## Output
 
 ### list
