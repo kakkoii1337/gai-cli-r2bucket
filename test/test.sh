@@ -4,6 +4,13 @@
 
 set -euo pipefail
 
+# Load .env if present
+if [ -f .env ]; then
+    set -a
+    source .env
+    set +a
+fi
+
 PASS_COUNT=0
 FAIL_COUNT=0
 
