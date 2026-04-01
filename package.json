@@ -1,6 +1,6 @@
 {
     "name": "gai-cli-r2bucket",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "CLI tool for Cloudflare R2 bucket operations",
     "type": "module",
     "main": "src/index.js",
